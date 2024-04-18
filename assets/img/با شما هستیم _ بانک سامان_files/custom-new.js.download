@@ -1,0 +1,430 @@
+﻿/*! jquery.cookie v1.4.1 | MIT */ ! function(a) { "function" == typeof define && define.amd ? define(["jquery"], a) : "object" == typeof exports ? a(require("jquery")) : a(jQuery) }(function(a) {
+    function b(a) { return h.raw ? a : encodeURIComponent(a) }
+
+    function c(a) { return h.raw ? a : decodeURIComponent(a) }
+
+    function d(a) { return b(h.json ? JSON.stringify(a) : String(a)) }
+
+    function e(a) { 0 === a.indexOf('"') && (a = a.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, "\\")); try { return a = decodeURIComponent(a.replace(g, " ")), h.json ? JSON.parse(a) : a } catch (b) {} }
+
+    function f(b, c) { var d = h.raw ? b : e(b); return a.isFunction(c) ? c(d) : d } var g = /\+/g,
+        h = a.cookie = function(e, g, i) { if (void 0 !== g && !a.isFunction(g)) { if (i = a.extend({}, h.defaults, i), "number" == typeof i.expires) { var j = i.expires,
+                        k = i.expires = new Date;
+                    k.setTime(+k + 864e5 * j) } return document.cookie = [b(e), "=", d(g), i.expires ? "; expires=" + i.expires.toUTCString() : "", i.path ? "; path=" + i.path : "", i.domain ? "; domain=" + i.domain : "", i.secure ? "; secure" : ""].join("") } for (var l = e ? void 0 : {}, m = document.cookie ? document.cookie.split("; ") : [], n = 0, o = m.length; o > n; n++) { var p = m[n].split("="),
+                    q = c(p.shift()),
+                    r = p.join("="); if (e && e === q) { l = f(r, g); break }
+                e || void 0 === (r = f(r)) || (l[q] = r) } return l };
+    h.defaults = {}, a.removeCookie = function(b, c) { return void 0 === a.cookie(b) ? !1 : (a.cookie(b, "", a.extend({}, c, { expires: -1 })), !a.cookie(b)) } });
+// =============================================/////////////CUSTOM\\\\\\\\\\\\\\\\\\\\\\\==================================
+$(document).ready(function() {
+    $('.PnlSearchSetting > table tr').addClass('row-data');
+    $('.row-data td:nth-of-type(1)').addClass('td-01');
+    $('.row-data td:nth-of-type(2)').addClass('td-02');
+    $('.row-data td:nth-of-type(3)').addClass('td-03');
+    $('.row-data td:nth-of-type(4)').addClass('td-04');
+    $('.td-01 span').text('از');
+    $('.td-03 span').text('تا');
+    $('.col-lefts .SiPo-SEARCH .SearchButton').appendTo('.SearchInputWrapper')
+        /*========================= Start js cookie =========================*/
+    $(".notok").click(function() {
+        $(".notice").remove();
+        $.cookie("BankMahboob", "1", { path: '/', expires: 5 });
+    });
+    $(".ok").click(function() {
+        $.cookie("BankMahboob", "1", { path: '/', expires: 5 });
+    });
+    if ($.cookie("BankMahboob") > 0) {
+        $('#ViewPanel').find('.notice').each(function(i, val) {
+            if (i == 0) { $(val).remove() }
+        })
+    } else {
+        $(".notice").css({ "display": "block" })
+    }
+    /*========================= End js cookie =========================*/
+    /*========================= start Remove Style Script Megamenu =========================*/
+    $(".Menu > span").find('style,script').remove();
+    $(".Menu").find('.imea,.imeamj').remove();
+    setTimeout(function() {
+        $(".navbar-menu-top").css("display", "block");
+        $(".col-lefts .SiPo-Menu").css("display", "block");
+    }, 200);
+    setTimeout(function() {
+        $(".navbar-menu-top .Menu > span > ul > li").hover(function() {
+            if ($(this).hasClass("active-li")) {
+                $(this).removeClass("active-li");
+            } else {
+                $(".navbar-menu-top .Menu > span > ul > li").removeClass("active-li");
+                $(this).addClass("active-li");
+            }
+        });
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('.active-li').length) {
+                $(".navbar-menu-top .Menu > span > ul > li").removeClass("active-li");
+            }
+        });
+        $("#sidebar > ul > li").each(function(index) {
+            if ($(this).find("ul").length > 0) { $(this).addClass("arrow level1");}
+        });
+        $("#sidebar > ul > li>ul>li").each(function(index) {
+            $(this).addClass("arrow level2");
+        });
+    }, 2000);
+    /*========================= end Remove Style Script Megamenu =========================*/
+    /*========================= start js Search =========================*/
+    $(".row-center .SiPo-SEARCH .SearchWrapper input").attr("placeholder", "جستجوی خبر");
+    /*========================= End js Search =========================*/
+    /*========================= start js unwrap menu header =========================*/
+    var pdiv = $(".navbar-menu-top .imsubc");
+    var pTags = $(".navbar-menu-top  ul");
+    if (pdiv.parent().is("div")) { pTags.unwrap(); }
+    if (pTags.parent().is("div")) { pTags.unwrap(); }
+    /*========================= end js unwrap menu header =========================*/
+    /*========================= start js sidebar responsive max-width 980px =========================*/
+    var body = document.body,
+        html = document.documentElement;
+    var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    setTimeout(function() { $("#sidebar").css("min-height", height); }, 2500)
+    $(window).resize(function() {
+        //var height_resize = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+
+        var height2 = $(window).height();
+        $("#sidebar").css("min-height", height2);
+        if ($(window).width() > 767) {
+            $('#sidebar').css({ "width": "0%" });
+            $('#sidebar > ul').css({ "left": "-10%", "width": "200%" });
+            $('.wrap').css({ "left": "0%" });
+            $('#sidebar').removeClass("show");
+            $(".row-two .container").css({ "margin-left": "auto" })
+            $(".row-two .navbar-menu-top").css({ "border-bottom-left-radius": "4px", "border-top-left-radius": "4px" });
+        }
+        if ($(this).width() < 992) {
+            $(".part-addres").appendTo(".row-seven .container .row");
+            $(".copy-right").css({ "margin-top": "0" });
+            $(".row-six .link-footer:first").removeClass("col-md-8 col-sm-8", function() {
+                $(this).addClass("col-md-12 col-sm-12");
+            });
+            $(".part-addres").removeClass("col-md-4 col-sm-4", function() {
+                $(this).addClass("col-md-12 col-sm-12");
+            });
+        } else {
+            $(".part-addres").appendTo(".row-six .container .row");
+            $(".copy-right").css({ "margin-top": "-40px" });
+            $(".row-six .link-footer:first").removeClass("col-md-12 col-sm-12", function() {
+                $(this).addClass("col-md-8 col-sm-8");
+            });
+            $(".part-addres").removeClass("col-md-12 col-sm-12", function() {
+                $(this).addClass("col-md-4 col-sm-4");
+            });
+        }
+    });
+    var nav = '<div class="sidebar-parent"><nav id="sidebar"></nav></div>';
+    $(nav).insertBefore('.wrap');
+   
+    $('.navbar-menu-top .SiPo-Menu ul.cdd0_main_menu:first').clone().removeClass().addClass('list-unstyled components').appendTo('#sidebar');
+    $('.navbar-menu-top .SiPo-Menu .Menu>span>ul:last').clone().removeClass().addClass('list-unstyled components').appendTo('#sidebar');
+
+    var pdiv = $("#sidebar .imsubc");
+    var pTags = $("#sidebar ul");
+    var pTags2 = $("#sidebar ul.components li ul");
+    if (pdiv.parent().is("div")) { pdiv.unwrap(); }
+    if (pTags2.parent().is("div")) { pTags2.unwrap(); }
+    $('#sidebar ul.components ul').removeClass().addClass('list-unstyled collapse');
+
+    $("#sidebar #imenus0 li").click(function(e) {
+        e.stopPropagation()
+         var ul = $(this).find('ul.collapse:first');
+         if ($(this).hasClass("open")) {
+             $(ul).slideUp(300, function() {});
+             if ($(ul).length > 0) { $(this).removeClass("open"); }
+         } else {
+             if ($(ul).length > 0) {
+                 if($(this).hasClass("level1")){
+                     $('#sidebar ul li').removeClass('open');
+                     $('#sidebar > ul > li ul').slideUp(300, function() {});
+                 }
+                 else if($(this).hasClass("level2")){
+                     $('#sidebar > ul li.level2').removeClass('open');
+                     $('#sidebar > ul li.level2 ul').slideUp(300, function() {});
+                 }
+                
+                 $(this).addClass("open");
+                 $(ul).slideDown(300, function() {});
+             }
+         }
+        });
+      
+    //============= start open and close menu in responsive ============
+    $('.wrap').click(function(event) {
+        var clicked = event.target.className;
+        if($('button.btn-navbar').length > 0){
+        var outBtn = $('button.btn-navbar')[0].className;
+        var inBtn = $('button.btn-navbar .icon-bar')[0].className;
+        if (clicked == outBtn || clicked == inBtn) {
+            if (!$('#sidebar').hasClass("show")) {
+                openMenu()
+            } else {
+                closeMenu();
+            }
+        } else {
+            if ($('.wrap').css('left') != '0px') { closeMenu(); }
+        }
+        }
+    })
+
+    function openMenu() {
+        $('#sidebar').addClass("show");
+        $('#sidebar').css({ "width": "80%" });
+        $('#sidebar > ul').css({ "right": "0", "width": "100%" });
+        $('.wrap').css({ "left": "-80%", "position": "relative" });
+        $('.row-two .container').css({ "padding-right": "0px", "margin-right": "0" });
+        $('.row-two .navbar-menu-top').css({ "border-bottom-right-radius": "0", "border-top-right-radius": "0" });
+        $('body').css({ "direction": "ltr" });
+        $('.logo-netbank').css({ "direction": "rtl" });
+        $('.header-top').css({ "direction": "rtl" });
+        $('.banner-monasebati').css({ "position": "relative" });
+        $('.banner-monasebati').css({ "right": "80%" });
+        $('#smartbanner').css({ "left": "-80%" });
+        $('.content').append('<div class="wrap-menu"></div>')
+    }
+
+    function closeMenu() {
+        $('#sidebar').css({ "width": "0%" });
+        $('#sidebar > ul').css({ "right": "-10%", "width": "200%" });
+        $('.wrap').css({ "left": "0" });
+        $('#sidebar').removeClass("show");
+        $('.row-two .container').css({ "padding-right": "20px;", "margin-right": "auto" })
+        $('.row-two .navbar-menu-top').css({ "border-bottom-right-radius": "4px", "border-top-right-radius": "4px" });
+        $('body').css({ "direction": "rtl" });
+        $('.banner-monasebati').css({ "position": "relative" });
+        $('.banner-monasebati').css({ "right": "0" });
+    }
+    //============= end open and close menu in responsive ============
+    /*========================= end js sidebar responsive max-width 980px =========================*/
+    /*========================= start js Count Character =========================*/
+    var Character = function(Selector, Count) {
+        $(Selector).each(function() {
+            var SelectorNum = $(this).text().length
+            if (SelectorNum > (Count - 5)) {
+                var SelectorLastSpace = $(this).text().lastIndexOf(" ", Count)
+                var SelectorText = $(this).text()
+                var SelectorText = $(this).text().substring(0, SelectorLastSpace);
+                $(this).text(SelectorText + "...")
+            }
+        });
+    }
+    Character(".news-list-footer ul li p .title-news", "45")
+        /*========================= end js Count Character =========================*/
+        /*========================= start js Tab-menu =========================*/
+    $(".responsive-tabs h2.responsive-tabs__heading").unwrap("div");
+    var _length = $('.responsive-tabs-wrapper h2.responsive-tabs__heading').length;
+    if($(".responsive-tabs").length > 0){
+    RESPONSIVEUI.responsiveTabs();
+    }
+    for (var x = 0; x < _length; x++) {
+        var _current = $(".responsive-tabs__list li").eq(x);
+        _current.append($(".responsive-tabs-wrapper h2.responsive-tabs__heading div.tab-icon").eq(x).clone());
+    }
+    $('.responsive-tabs__list li div.tab-icon img').each(function() {
+        $(this).clone().addClass("active").appendTo($(this).parent("div.tab-icon"));
+    });
+    $('.responsive-tabs__list li div.tab-icon img.active').each(function() {
+        $(this).attr("src", $(this).attr("src").replace("-active", ""));
+    });
+    $(".responsive-tabs__list__item").click(function() {
+        $(".s-box-main").each(function() {
+            if ($(this).attr('aria-hidden') == 'false') {
+                $(this).animate({ opacity: 1 }, 1000);
+            } else if ($(this).attr('aria-hidden') == 'true') { $('.s-box-main').css('opacity', ''); }
+        });
+    });
+    $("#tablist1-tab1").trigger("click");
+    var URL = window.location.href;
+    var myString = URL.substr(URL.indexOf("#"))
+    if (URL.indexOf("#") != -1) {
+        var myString = decodeURI(myString)
+        $(myString).trigger('click')
+    }
+    /*========================= End js Tab-menu =========================*/
+    /*========================= Start js box-Accordion =========================*/
+    $(".box-item-accordion").each(function(i) {
+        if (i % 2 === 0) { $(this).addClass("box-item-accordion-even"); }
+    });
+    $(".box-accordion .box-item-accordion .title-accordion, .box-accordion .box-item-accordion .accordion-panel-heading").click(function(e) {
+        e.preventDefault();
+        $(this).parents('.box-item-accordion').find(".content-accordion").toggle(500).css({ "display": "block" })
+    });
+    /*========================= End js box-Accordion =========================*/
+    /*========================= Start js Datepicker =========================*/
+    $('input[src="../Controls/JQuery/ui/datepicker/theme/images/calendar.gif"]').attr("src", "../Theme/saman-fa-khordad-98/img/icon/calender.png");
+    /*========================= End js Datepicker =========================*/
+    /*========================= Start Pagination-News-Block =========================*/
+    var pagination = { currentPage: 1, startItem: 0, endItem: $('.last-news > a').length, lastPage: 0 }
+    if (pagination.endItem <= 10) { $('.news-control .pre-news').css({ 'display': 'none' }); }
+    pagination.lastPage = pagination.endItem / 10;
+    if (pagination.lastPage > parseInt(pagination.lastPage)) {
+        pagination.lastPage = parseInt(pagination.lastPage) + 1;
+    }
+    changePagination(pagination)
+
+    function changePagination(pagination) {
+        $('.last-news > a').each(function(i, e) {
+            if (i >= pagination.startItem && i < pagination.startItem + 10) {
+                $(this).css({ 'display': 'block' });
+            } else {
+                $(this).css({ 'display': 'none' });
+            }
+        });
+    }
+    $('.news-control').click(function(e) {
+            if (e.target.className == "next-news") {
+                if (pagination.currentPage > 1) {
+                    pagination.startItem -= 10;
+                    pagination.currentPage--;
+                    changePagination(pagination);
+                    if (pagination.currentPage == 1) {
+                        $('.news-control .next-news').css({ 'display': 'none' });
+                    }
+                    $('.news-control .pre-news').css({ 'display': 'inline-block' });
+                }
+            } else if (e.target.className == "pre-news") {
+                pagination.startItem += 10;
+                pagination.currentPage++;
+                changePagination(pagination);
+                if (pagination.currentPage == pagination.lastPage) {
+                    $('.news-control .pre-news').css({ 'display': 'none' });
+                }
+                if (pagination.currentPage <= pagination.lastPage) {
+                    $('.news-control .next-news').css({ 'display': 'inline-block' });
+                }
+            }
+        })
+        /*========================= End Pagination-News-Block =========================*/
+        /*========================= Start Faq =========================*/
+    $('.faq-page .list-btn a').click(function(e) {});
+    $('.questions').click(function(e) {
+        var clicked = e.target;
+        if (clicked.className == "title-question") {
+            if ($(clicked).next().css("display") == "none") {
+                $('.questions .answer-question').slideUp(300);
+                $(clicked).next().slideDown(300);
+            } else {
+                $(clicked).next().slideUp(300);
+            }
+        }
+    });
+    $('.list-btn2 .item').each(function(i, e) {
+        var id = $(this).find('a').attr('href');
+        var curUrl = window.location.href;
+        $(this).find('a').attr('href', curUrl + id);
+        id = id.substring(1, id.length);
+        $('.SiPo-FAQ').each(function(ii, ee) {
+            if (ii == i) { $(this).attr('id', id); }
+        });
+    });
+    /*========================= End Faq =========================*/
+    /*========================= Start Table =========================*/
+    $('.has-table').each(function() {
+            var array = [],
+                th = $(this).find('th'),
+                tr = $(this).find('tr');
+            $(th).length > 0 && $(th).each(function() {
+                    array.push($(this).text().replace(/\r?\n|\r/, ""))
+                }),
+                $(tr).length > 0 && $(tr).each(function() {
+                    $("td", this).each(function(event) {
+                        $(this).attr("data-th", array[event])
+                    })
+                })
+        })
+        /*========================= End Table =========================*/
+        /*========================= Start Table-Mali =========================*/
+    setTimeout(function() {
+        $(".responsive-tabs__panel").each(function() {
+            $(this).find(".rull .father").each(function(i) { i += 1;
+                $(this).prepend('<div class="sort">' + i + '</div>') })
+        })
+    }, 500);
+    /*========================= End Table-Mali =========================*/
+    /*========================= start Owl-carousel-lightbox =========================*/
+    if($('.owl-carousel-light').length>0){
+    $('.owl-carousel-light').owlCarousel({
+        rtl: true,
+        loop: false,
+        margin: 15,
+        responsiveClass: true,
+        nav: true,
+        responsive: {
+            0: { items: 1, nav: true },
+            400: { items: 2, nav: true },
+            480: { items: 3, nav: true },
+            640: { items: 5, nav: true },
+            768: { items: 5, nav: true },
+            1200: { items: 6, nav: true },
+            1900: { items: 6, nav: true, loop: false, margin: 15 }
+        }
+    });
+    }
+    $('.owl-next').addClass('glyphicon glyphicon-chevron-right').text('');
+    $('.owl-prev').addClass('glyphicon glyphicon-chevron-left').text('');
+    var lightbox;
+    if (lightbox) {
+        lightbox.option({ 'resizeDuration': 200, 'wrapAround': true, positionFromTop: 50, showImageNumberLabel: false })
+    }
+    /*========================= end Owl-carousel-lightbox =========================*/
+    /*========================= footer copyright =========================*/
+    if ($(window).width() < 992) {
+        $(".part-addres").appendTo(".row-seven .container .row");
+        $(".copy-right").css({ "margin-top": "0" });
+        $(".row-six .link-footer:first").removeClass("col-md-8 col-sm-8", function() {
+            $(this).addClass("col-md-12 col-sm-12");
+        })
+        $(".part-addres").removeClass("col-md-4 col-sm-4", function() {
+            $(this).addClass("col-md-12 col-sm-12");
+        });
+    }
+    /*========================= footer copyright =========================*/
+    /*========================= start responsive menu ====================*/
+    //========= add "minify-menu" class to menu's li if length of submenus is greater than 8 
+    var menu_items = $('.navbar-menu-top .Menu > span > ul > li');
+    (menu_items.length > 8) && menu_items.addClass("minify-menu")
+        /*========================= end responsive menu ======================*/
+        /*========================= block menu right level =========================*/
+    $(".col-lefts .SiPo-Menu *").removeAttr("style");
+    var pdiv_right = $(".col-lefts .SiPo-Menu .imsubc");
+    var pTags_right = $(".col-lefts .SiPo-Menu  ul");
+    if (pdiv_right.parent().is("div")) { pTags_right.unwrap(); }
+    if (pTags_right.parent().is("div")) { pTags_right.unwrap(); }
+    $(".col-lefts .SiPo-Menu ul li").find("ul:first").parent("li").addClass("border-bottom-arrow");
+    $(".col-lefts .SiPo-Menu ul li a").click(function(e) {
+            e.preventDefault();
+            if ($(this).parent().find("ul:first").length > 0) {
+                if ($(this).parent().find("ul:first").hasClass("open-menu")) {
+                    $(this).parent("li").removeClass("active-menu");
+                    $(this).parent().find("ul:first").removeClass("open-menu").slideUp("slow");
+                } else {
+                    $(this).parent().find("ul:first").addClass("open-menu").slideDown("slow");
+                    $(this).parent("li").addClass("active-menu");
+                    $(".col-lefts .SiPo-Menu ul li ul").not($(this).parents("li").find("ul:first")).removeClass("open-menu").slideUp("slow");
+                    $(".col-lefts .SiPo-Menu ul li").not($(this).parents("li")).removeClass("active-menu");
+                }
+            }
+        })
+        /*========================= block menu right level =========================*/
+
+});
+/**********************************************************************/
+/* Added In Graphic Group At 14011126 Inorder To Fix Multi Step Forms */
+/*                                                                    */
+/**********************************************************************/
+$(document).ready(function(){
+    fixMultiStepForms();
+})
+function fixMultiStepForms(){
+    var containingTd = $(".SiPo-FORM td.dynamic-form-wizard-navigationTable-td.dynamic-form-wizard-navigationTable-step-td");
+    containingTd.addClass("d-flex").addClass("flex-row-reverse").addClass("align-items-center");
+    containingTd.append ( containingTd .find("input[type='submit']").eq(0) )
+}
+var prm = Sys.WebForms.PageRequestManager.getInstance();
+prm.add_endRequest( function(){
+    fixMultiStepForms();
+} )
